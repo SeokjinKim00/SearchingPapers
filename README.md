@@ -1,4 +1,11 @@
 # Searching Papers
 
 ## Description
-This crawling program is to search for papers on multiple sites.
+A program that scraps thesis-related information on multiple sites.
+
+## Progress
+* [x] Scrap from Google Scholar
+* [ ] Scrap from RISS
+* [ ] Scrap from DBpia
+* [ ] Make GUI
+* [ ] Make EXE File
