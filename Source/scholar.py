@@ -1,6 +1,8 @@
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import pandas as pd
 
 def checkCAPTCHA(driver):
     checkStr = '사용자가 로봇이 아니라는 확인이 필요합니다.'
@@ -50,3 +52,32 @@ def getScholarLink(driver):
             except:
                 linkList.append('None')
     return linkList
+
+def runScholar(question):
+    path = 'WebDriver/chromedriver.exe'
+    driver = webdriver.Chrome(executable_path=path)
+    titles = []
+    authors = []
+    links = []
+    try:
+        for page in range(99):
+            url = getScholarURL(question, (page*10))
+            
+            driver.minimize_window()
+            driver.get(url)
+            checkCAPTCHA(driver)
+            titles.extend(getScholarTitle(driver=driver))
+            authors.extend(getAuthorScholar(driver=driver))
+            links.extend(getScholarLink(driver=driver))
+    except:
+        print("Scrap End")
+        
+        # print(titles)
+    data = {"Title": titles,
+            "Author": authors,
+            "Link": links}
+
+    df = pd.DataFrame(data)
+    df.to_csv('Data/ScholarPapers.csv')
+    
+    driver.quit()
