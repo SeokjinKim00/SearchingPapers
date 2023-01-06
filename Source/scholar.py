@@ -54,8 +54,11 @@ def getScholarLink(driver):
     return linkList
 
 def runScholar(question):
+    opt = webdriver.ChromeOptions()
+    opt.add_experimental_option('excludeSwitches', ['enable-logging'])
     path = 'WebDriver/chromedriver.exe'
-    driver = webdriver.Chrome(executable_path=path)
+    driver = webdriver.Chrome(executable_path=path, options=opt)
+
     titles = []
     authors = []
     links = []
