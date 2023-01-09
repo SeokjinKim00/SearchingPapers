@@ -9,12 +9,17 @@ def checkCAPTCHA(driver):
     try:
         check = driver.find_element(By.ID, 'gs_captcha_f')
         if checkStr == str(check.text):
-            print("Please check reCAPTCHA")
-            print("If you're done, press Enter")
-            print("Enter : ", end=' ')
-            input()
+            return 1
     except:
-        pass
+        return 0
+
+def checkNextPage(driver):
+    element = WebDriverWait(driver, 100).until(EC.presence_of_element_located((By.ID, 'gs_n')))
+    try:
+        link = driver.find_element(By.XPATH, '//*[@id="gs_n"]/center/table/tbody/tr/td[12]/a/b')
+        return 0
+    except:
+        return 1
 
 def getScholarURL(question, page):
     urlBefore = 'https://scholar.google.co.kr/scholar?start='
@@ -62,20 +67,25 @@ def runScholar(question):
     titles = []
     authors = []
     links = []
-    try:
-        for page in range(99):
-            url = getScholarURL(question, (page*10))
-            
-            driver.minimize_window()
-            driver.get(url)
-            checkCAPTCHA(driver)
-            titles.extend(getScholarTitle(driver=driver))
-            authors.extend(getAuthorScholar(driver=driver))
-            links.extend(getScholarLink(driver=driver))
-    except:
-        print("Scrap End")
+    page = 0
+    while 1:
+        url = getScholarURL(question, (page*10))
         
-        # print(titles)
+        driver.minimize_window()
+        driver.get(url)
+        if checkCAPTCHA(driver):
+            print("Please check reCAPTCHA")
+            print("If you're done, press Enter")
+            print("Enter : ", end=' ')
+            input()
+        if checkNextPage(driver):
+            break
+        page += 1
+        
+        titles.extend(getScholarTitle(driver=driver))
+        authors.extend(getAuthorScholar(driver=driver))
+        links.extend(getScholarLink(driver=driver))
+
     data = {"Title": titles,
             "Author": authors,
             "Link": links}
