@@ -35,8 +35,8 @@ def runScholar(question):
     data = {"Title": titles,
             "Author": authors,
             "Link": links}
-
     df = pd.DataFrame(data)
-    df.to_csv('Data/ScholarPapers.csv')
+    name = 'ScholarPapers'
+    makeCSV(df, name)
     
     driver.quit()

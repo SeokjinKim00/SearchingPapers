@@ -1,4 +1,4 @@
-from scholar import runScholar
+from scholarMain import runScholar
 
 if __name__ == '__main__':
     print("--- Please enter a search term ---")
