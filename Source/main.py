@@ -1,4 +1,4 @@
-from scholarMain import runScholar
+import scholarMain
 
 if __name__ == '__main__':
     print("--- Please enter a search term ---")
@@ -12,4 +12,4 @@ if __name__ == '__main__':
 
     if siteCheck == '1':
         question.replace(' ', '+')
-        runScholar(question=question)
+        scholarMain.runScholar(question=question)

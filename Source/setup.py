@@ -1,7 +1,10 @@
 from cx_Freeze import setup, Executable
-import sys
 
-buildOpt = dict(packages=['selenium', 'pandas', 'os', 'scholarMain', 'scholar', 'commonFunc'], excludes=[])
+option = {
+        'packages' : ['scholarMain', 'scholar', 'commonFunc'],
+        'excludes' : [],
+        'build_exe': '../build'
+}
 exe = [Executable("main.py")]
 
 setup(
@@ -9,6 +12,6 @@ setup(
     version ='0.1',
     author='SeokJin',
     description='This is a program that scrap papers.',
-    options=dict(build_exe=buildOpt),
+    options=dict(build_exe=option),
     executables = exe
 )
