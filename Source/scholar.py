@@ -9,12 +9,17 @@ def checkCAPTCHA(driver):
     try:
         check = driver.find_element(By.ID, 'gs_captcha_f')
         if checkStr == str(check.text):
-            print("Please check reCAPTCHA")
-            print("If you're done, press Enter")
-            print("Enter : ", end=' ')
-            input()
+            return 1
     except:
-        pass
+        return 0
+
+def checkNextPage(driver):
+    element = WebDriverWait(driver, 100).until(EC.presence_of_element_located((By.ID, 'gs_n')))
+    try:
+        link = driver.find_element(By.XPATH, '//*[@id="gs_n"]/center/table/tbody/tr/td[12]/a/b')
+        return 0
+    except:
+        return 1
 
 def getScholarURL(question, page):
     urlBefore = 'https://scholar.google.co.kr/scholar?start='
@@ -52,35 +57,3 @@ def getScholarLink(driver):
             except:
                 linkList.append('None')
     return linkList
-
-def runScholar(question):
-    opt = webdriver.ChromeOptions()
-    opt.add_experimental_option('excludeSwitches', ['enable-logging'])
-    path = 'WebDriver/chromedriver.exe'
-    driver = webdriver.Chrome(executable_path=path, options=opt)
-
-    titles = []
-    authors = []
-    links = []
-    try:
-        for page in range(99):
-            url = getScholarURL(question, (page*10))
-            
-            driver.minimize_window()
-            driver.get(url)
-            checkCAPTCHA(driver)
-            titles.extend(getScholarTitle(driver=driver))
-            authors.extend(getAuthorScholar(driver=driver))
-            links.extend(getScholarLink(driver=driver))
-    except:
-        print("Scrap End")
-        
-        # print(titles)
-    data = {"Title": titles,
-            "Author": authors,
-            "Link": links}
-
-    df = pd.DataFrame(data)
-    df.to_csv('Data/ScholarPapers.csv')
-    
-    driver.quit()
