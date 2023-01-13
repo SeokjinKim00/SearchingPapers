@@ -1,3 +1,6 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
 def textInput():
     print("Search Text")
     print("Enter : ", end='')
@@ -9,3 +12,9 @@ def textInput():
     print("Enter : ", end='')
     menuInput = int(input())
     return searchTxt, menuInput
+
+def rissSearchPage(driver, query):
+    element = driver.find_element(By.ID,'query')
+    driver.find_element(By.ID,'query').click( )
+    element.send_keys(query)
+    element.send_keys(Keys.ENTER)
